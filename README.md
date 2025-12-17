@@ -1,16 +1,24 @@
-# HW#42
-Create SNS Topic “calculator_topic” publishing JSON with format: 
-
-{“op1”: < float value >, “op2”: < float value >, “operation”: < operation, like “+”, “-”, “*”, “/” >}
-
-Write lambda function that gets event from SNS topic described in #1 (learn format of SNS event) 
-
-Computes a specified operation with two specified operands 
-
-In the case wrong JSON prints relevant message containing error explanation, like “Missing operand1”, “Missing operand2”, “Operand must be a number”, “Wrong operation” 
-
-Prints result in the case of a correct JSON 
-
-Send the link to GitHub repository containing the code of the lambda function  
+# HW#43
+## Lambda function as target of Gateway HTTP API
+1. For GET request return status code 200 with body containing {status: up}<br>
+2. For POST request perform the following<br>
+2.1 Validate body for existence "op1" as float, "op2" as float and "operation" as string (no validate concrete operation value, because it's functionality of lambda calculator)<br> 
+2.1.1 In the case of wrong JSON the lambda function should return status code 400 with related error message<br>
+2.2 Debug / Error logging<br>
+2.3 Publishing message containing appropriate JSON with calculation data<br>
+2.3.1 In the case of error the lambda function should return status code 500 with related error message<br>
+2.3.2 In the case of succesful publishing the lambda function should return status code 200 with  { MessageId: < MessageID value > }
+## Lambda function as a subscriber of appropriated SNS standard topic
+1. No JSON validation inside a received Message that implied to be done in 2.1 <br>
+2. If the "operation" contains wrong value (non-existed operation) the lambda function raises ValueError<br>
+3. If the "operation" contains correct value the lambda function should calculate in accordance with the operands and the operation. The result should be printed to CloudWatch
+## Note about authorization
+Each Lambda function has predefined authorization role with all permissions. For publishing SNS message that role should contain appropriate permission policy (see how to do it in IAM AWS Service)
+## Integration Acceptence Test
+### Test normal flow
+1. Postman sends correct JSON, result - CloudWatch  in the Log group for SNS lambda subscriber function contains Log stream with appropriate result (no errors), status code 200
+### Test alternative flows
+1. Postman sends wrong JSON, result - CloudWatch in the Log group for HTTP lamda target function contains appropriate error messages, status code 400<br>
+2. Postman sends correct JSON, but wrong operation value, result - CloudWatch in the Log group for SNS lambda subscriber function contains appropriate error message, status code 200<br>
 
  
