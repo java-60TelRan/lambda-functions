@@ -11,14 +11,7 @@ OPERATIONS: dict = {
     '+': operator.add,
     '/': operator.truediv
 }
-def getOperandValue(calcData:dict, operandName:str) -> float:
-    try:
-        operand = float(calcData[operandName]["Value"])
-    except KeyError:
-        raise AttributeError(f"Missing {operandName}") 
-    except ValueError:
-        raise AttributeError(f"{operandName} should be a number")
-    return operand
+
 def getCalcData(event)->dict:
     try:
         calcData: dict = json.loads(event["Records"][0]["Sns"]["Message"])
