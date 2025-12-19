@@ -13,7 +13,7 @@
 2. If the "operation" contains wrong value (non-existed operation) the lambda function raises ValueError<br>
 3. If the "operation" contains correct value the lambda function should calculate in accordance with the operands and the operation. The result should be printed to CloudWatch
 ## Note about validation
-Consider using "pydantic" BaseModel class 
+Consider using custom validation as pydantic requires third party installation
 ## Note about authorization
 Each Lambda function has predefined authorization role with all permissions. For publishing SNS message that role should contain appropriate permission policy (see how to do it in IAM AWS Service)
 ## Integration Acceptence Test
