@@ -2,7 +2,7 @@ import boto3
 from botocore.exceptions import ClientError
 from getpass import getpass
 CLIENT_ID = "6n5mvgjg3rje55ek2dtkju0tmm"
-USERNAME = "yuragranovsky"
+USERNAME = "sun_set"
 CHALLENGE_NAME = 'ChallengeName'
 def initiate_auth(client, password)->dict:
     resp = client.initiate_auth(
